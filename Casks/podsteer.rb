@@ -24,10 +24,20 @@ cask "podsteer" do
     strategy :github_latest
   end
 
-  # A SYMBOL, not a string comparison. `">= :high_sierra"` is deprecated and
-  # made `brew tap` print a warning at everybody who added this tap; the bare
-  # symbol already means "this version or newer" to Homebrew.
-  depends_on macos: :high_sierra
+  # BIG SUR BECAUSE THAT IS WHAT THE BINARY SAYS. `otool -l` reports
+  # `minos 11.0` on both slices of the universal build, so this is read off
+  # the artefact rather than chosen.
+  #
+  # It was `">= :high_sierra"`, which was wrong twice over. The string
+  # comparison form is deprecated — a bare symbol already means "this version
+  # or newer" — and :high_sierra has since been REMOVED from Homebrew
+  # altogether, so the symbol form of it is disabled with no replacement. The
+  # oldest symbol Homebrew still knows is :catalina.
+  #
+  # Homebrew's own source marks Big Sur for removal in September 2027 or
+  # later. When that lands this line has to move up, and the binary's minos
+  # is where to look for what to move it to.
+  depends_on macos: :big_sur
 
   app "PodSteer.app"
 
