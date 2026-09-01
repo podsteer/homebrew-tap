@@ -24,10 +24,10 @@ cask "podsteer" do
     strategy :github_latest
   end
 
-  # Wails builds an unsigned bundle, so macOS refuses to open it until the
-  # quarantine flag is cleared. `auto_updates false` and this depends_on are
-  # honest metadata rather than a workaround; see the caveat below.
-  depends_on macos: ">= :high_sierra"
+  # A SYMBOL, not a string comparison. `">= :high_sierra"` is deprecated and
+  # made `brew tap` print a warning at everybody who added this tap; the bare
+  # symbol already means "this version or newer" to Homebrew.
+  depends_on macos: :high_sierra
 
   app "PodSteer.app"
 
@@ -51,16 +51,16 @@ cask "podsteer" do
     "~/Library/WebKit/com.podsteer.desktop",
   ]
 
+  # NO QUARANTINE INSTRUCTION. This used to tell people to run `xattr -dr
+  # com.apple.quarantine` because the build was unsigned. It is now signed with
+  # a Developer ID, notarised, and the ticket is stapled — Gatekeeper reports
+  # "accepted, source=Notarized Developer ID" — so that advice became both
+  # untrue and actively harmful: stripping quarantine is a habit worth nobody
+  # learning, and teaching it for an app that does not need it is how somebody
+  # later applies it to one that does.
   caveats <<~EOS
-    PodSteer is not yet signed with an Apple Developer ID, so macOS will refuse
-    to open it the first time with "PodSteer is damaged and can't be opened".
-    It is not damaged — that is Gatekeeper reporting an unsigned download.
-
-    Clear the quarantine flag once:
-
-      xattr -dr com.apple.quarantine /Applications/PodSteer.app
-
     PodSteer reads your existing kubeconfig and talks only to the clusters it
-    names. It sends nothing anywhere else.
+    names. It sends nothing anywhere else: no account, no telemetry, and no
+    update check.
   EOS
 end
