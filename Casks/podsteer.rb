@@ -8,11 +8,11 @@
 # Dock, Spotlight and Launchpad can find it. Installing a windowed application
 # through a formula leaves it invisible to all three.
 cask "podsteer" do
-  version "0.1.1"
+  version "0.2.0"
 
   # One universal build covers Apple Silicon and Intel, so there is a single
   # URL and a single checksum rather than an arch conditional.
-  sha256 "7147a4e17dce6e296e8e3267d204afb32abf661ea41a91da32f1218794fdf445"
+  sha256 "cab54e378448fe3ae9ad0670da838a6f06a343df6799c373aaee2870f4459224"
 
   url "https://github.com/podsteer/podsteer/releases/download/v#{version}/podsteer_v#{version}_macos-universal.zip"
   name "PodSteer"
