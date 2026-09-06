@@ -1,17 +1,17 @@
-# The `version` and `sha256` lines are rewritten by the PodSteer release
-# workflow on every production release — do not hand-edit those two. Everything
-# else here, the caveats and the zap list especially, is prose the workflow
-# preserves and nothing generates: it is maintained by hand, in this file.
+# The `version`, `sha256` and `depends_on macos:` lines are rewritten by the
+# PodSteer release workflow on every production release — do not hand-edit
+# those three. Everything else here, the caveats and the zap list especially,
+# is prose the workflow preserves and nothing generates: it is maintained by
+# hand, in this file.
 #
 # A CASK, not a formula, because PodSteer is a GUI application. A formula puts an
 # executable on your PATH; a cask installs an .app into /Applications where the
 # Dock, Spotlight and Launchpad can find it. Installing a windowed application
 # through a formula leaves it invisible to all three.
 cask "podsteer" do
-  version "0.2.0"
-
   # One universal build covers Apple Silicon and Intel, so there is a single
   # URL and a single checksum rather than an arch conditional.
+  version "0.2.0"
   sha256 "cab54e378448fe3ae9ad0670da838a6f06a343df6799c373aaee2870f4459224"
 
   url "https://github.com/podsteer/podsteer/releases/download/v#{version}/podsteer_v#{version}_macos-universal.zip"
@@ -24,19 +24,24 @@ cask "podsteer" do
     strategy :github_latest
   end
 
-  # BIG SUR BECAUSE THAT IS WHAT THE BINARY SAYS. `otool -l` reports
-  # `minos 11.0` on both slices of the universal build, so this is read off
-  # the artefact rather than chosen.
+  # REWRITTEN BY THE RELEASE WORKFLOW, so do not move it by hand. It is read
+  # out of LSMinimumSystemVersion in the bundle this cask is about to serve
+  # and mapped through a table that FAILS the release on a macOS version it
+  # does not know, rather than guessing one.
   #
-  # It was `">= :high_sierra"`, which was wrong twice over. The string
-  # comparison form is deprecated — a bare symbol already means "this version
-  # or newer" — and :high_sierra has since been REMOVED from Homebrew
-  # altogether, so the symbol form of it is disabled with no replacement. The
-  # oldest symbol Homebrew still knows is :catalina.
+  # It is derived because it went stale twice while it was not. It read
+  # `">= :high_sierra"` for three releases — wrong twice over, since the
+  # string form is deprecated (a bare symbol already means "this version or
+  # newer") and :high_sierra has since been removed from Homebrew altogether.
+  # Corrected by hand to :big_sur, it was then about to be wrong again by two
+  # major versions the moment the application's floor moved to Ventura.
   #
-  # Homebrew's own source marks Big Sur for removal in September 2027 or
-  # later. When that lands this line has to move up, and the binary's minos
-  # is where to look for what to move it to.
+  # The value here is whatever the last production release declared. v0.2.0
+  # declared 10.13.0, matching its x86_64 slice — that slice carries the older
+  # LC_VERSION_MIN_MACOSX at 10.13 while arm64 carries LC_BUILD_VERSION at
+  # 11.0, which is correct rather than a mismatch, because Apple Silicon did
+  # not exist before macOS 11. PodSteer's own build asserts the plist against
+  # the LOWEST slice, which is what makes reading the plist here sound.
   depends_on macos: :big_sur
 
   app "PodSteer.app"
