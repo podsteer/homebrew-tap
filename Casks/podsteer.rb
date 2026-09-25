@@ -11,8 +11,8 @@
 cask "podsteer" do
   # One universal build covers Apple Silicon and Intel, so there is a single
   # URL and a single checksum rather than an arch conditional.
-  version "0.2.0"
-  sha256 "cab54e378448fe3ae9ad0670da838a6f06a343df6799c373aaee2870f4459224"
+  version "0.3.0"
+  sha256 "f6acbf67c197f6275d1412a630092dcf7a76e046595e824363ee1b322061ccf2"
 
   url "https://github.com/podsteer/podsteer/releases/download/v#{version}/podsteer_v#{version}_macos-universal.zip"
   name "PodSteer"
@@ -42,7 +42,7 @@ cask "podsteer" do
   # 11.0, which is correct rather than a mismatch, because Apple Silicon did
   # not exist before macOS 11. PodSteer's own build asserts the plist against
   # the LOWEST slice, which is what makes reading the plist here sound.
-  depends_on macos: :big_sur
+  depends_on macos: :ventura
 
   app "PodSteer.app"
 
