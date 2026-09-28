@@ -74,8 +74,9 @@ cask "podsteer" do
   # learning, and teaching it for an app that does not need it is how somebody
   # later applies it to one that does.
   caveats <<~EOS
-    PodSteer reads your existing kubeconfig and talks only to the clusters it
-    names. It sends nothing anywhere else: no account, no telemetry, and no
-    update check.
+    PodSteer reads your existing kubeconfig and talks to the clusters it names.
+    No account and no telemetry. The one other call is a once-a-day update
+    check to api.github.com carrying no identifier; turn it off in Settings or
+    with PODSTEER_UPDATE_CHECK=false.
   EOS
 end
