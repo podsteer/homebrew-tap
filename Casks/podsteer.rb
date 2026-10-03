@@ -11,8 +11,8 @@
 cask "podsteer" do
   # One universal build covers Apple Silicon and Intel, so there is a single
   # URL and a single checksum rather than an arch conditional.
-  version "0.5.1"
-  sha256 "5c6b859cac83c9173f31c7ef99a082ffb452d484e80db5e8db9fd352aae84478"
+  version "0.6.0"
+  sha256 "e1817f7ce32ffde711c1029e143a942a568d2b835f385bb2a9b1f6029fd382f8"
 
   url "https://github.com/podsteer/podsteer/releases/download/v#{version}/podsteer_v#{version}_macos-universal.zip"
   name "PodSteer"
